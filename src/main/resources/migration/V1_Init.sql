@@ -3,7 +3,9 @@
 CREATE TABLE images (
                         id      VARCHAR(255) NOT NULL,
                         url     VARCHAR(255) NOT NULL,
-                        CONSTRAINT pk_images PRIMARY KEY (id)
+                        product_id  BIGINT          NOT NULL,
+                        CONSTRAINT pk_images PRIMARY KEY (id),
+                            CONSTRAINT fk_sizes_product FOREIGN KEY (product_id) REFERENCES products (id)
 );
 
 CREATE TABLE products (
