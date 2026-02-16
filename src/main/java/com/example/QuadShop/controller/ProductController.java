@@ -16,17 +16,27 @@ import java.util.List;
 public class ProductController {
     private final ProductsService service;
 
-    @GetMapping("/")
+    @GetMapping
     public List<Product> getAllProducts() {
-        return service.GetAllProdducts();
+        System.out.println(">>> Controller hit");        // add this
+        return service.GetAllProducts();
     }
+
     @GetMapping(params = "category")
     public List<Product> getProductsByCategory(String category) {
         return service.GetProductsByCategory(category);
     }
+
+
     @GetMapping("/{id}")
     public Product getProductsByID(@PathVariable long id) {
+        System.out.println(">>> Controller hit");
         return service.GetProductById(id);
+    }
+
+    @GetMapping(params = "search")
+    public List<Product> getProductsByC(String search) {
+        return service.SearchProducts(search);
     }
 
 

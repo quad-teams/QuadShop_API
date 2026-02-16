@@ -10,27 +10,20 @@ import java.util.Optional;
 public class ToDomain {
 
     // ProductEntity → Product
-    public static Product toProduct(ProductEntity entity) {
+    public static Product Product(ProductEntity entity) {
         if (entity == null) return null;
-
-        List<Specification> specifications = new ArrayList<>();
-        if (entity.getSpecifications() != null) {
-            for (SpecificationEntity se : entity.getSpecifications()) {
-                specifications.add(toSpecification(se));
-            }
-        }
 
         List<Image> images = new ArrayList<>();
         if (entity.getImages() != null) {
             for (ImageEntity ie : entity.getImages()) {
-                images.add(toImage(ie));
+                images.add(Image(ie));
             }
         }
 
         List<Size> sizes = new ArrayList<>();
         if (entity.getSizes() != null) {
             for (SizeEntity se : entity.getSizes()) {
-                sizes.add(toSize(se));
+                sizes.add(Size(se));
             }
         }
 
@@ -39,14 +32,13 @@ public class ToDomain {
                 entity.getName(),
                 entity.getDescription(),
                 entity.getPrice(),
-                specifications,
                 images,
                 sizes
         );
     }
 
     // SizeEntity → Size
-    private static Size toSize(SizeEntity entity) {
+    private static Size Size(SizeEntity entity) {
         if (entity == null) return null;
         return new Size(
                 entity.getId(),
@@ -55,7 +47,7 @@ public class ToDomain {
     }
 
     // ImageEntity → Image
-    private static Image toImage(ImageEntity entity) {
+    private static Image Image(ImageEntity entity) {
         if (entity == null) return null;
         return new Image(
                 entity.getId(),
@@ -63,23 +55,14 @@ public class ToDomain {
         );
     }
 
-    // SpecificationEntity → Specification
-    private static Specification toSpecification(SpecificationEntity entity) {
-        if (entity == null) return null;
-        return new Specification(
-                entity.getId(),
-                entity.getKey(),
-                entity.getValue()
-        );
-    }
 
-    public static Order ToOrder(OrderEntity entity) {
+    public static Order Order(OrderEntity entity) {
         if (entity == null) return null;
 
         List<OrderItem> orderItems = new ArrayList<>();
         if (entity.getOrderItems() != null) {
             for (OrderItemEntity itemEntity : entity.getOrderItems()) {
-                orderItems.add(toOrderItem(itemEntity));
+                orderItems.add(OrderItem(itemEntity));
             }
         }
 
@@ -90,11 +73,11 @@ public class ToDomain {
         );
     }
 
-    private static OrderItem toOrderItem(OrderItemEntity entity) {
+    private static OrderItem OrderItem(OrderItemEntity entity) {
         if (entity == null) return null;
         return new OrderItem(
                 entity.getId(),
-                toProduct(entity.getProduct()),
+                Product(entity.getProduct()),
                 entity.getQuantity()
         );
     }

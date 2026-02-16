@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Image {
-    Long id;
+    String id;
     String url;
 }

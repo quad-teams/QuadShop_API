@@ -1,18 +1,17 @@
 package com.example.QuadShop.business;
 
 import com.example.QuadShop.business.Mapper.ToDomain;
-import com.example.QuadShop.business.Mapper.ToEntity;
 import com.example.QuadShop.domain.Order;
-import com.example.QuadShop.domain.OrderItem;
-import com.example.QuadShop.domain.Product;
 import com.example.QuadShop.persistence.OrdersRepo;
 import com.example.QuadShop.persistence.ProductsRepo;
 import com.example.QuadShop.persistence.entity.OrderEntity;
+import com.example.QuadShop.persistence.entity.OrderItemEntity;
 import com.example.QuadShop.persistence.entity.ProductEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -22,29 +21,25 @@ public class OrdersService {
     public final ProductsRepo productsRepo;
     private final OrdersRepo ordersRepo;
 
-    void CreateCart(){
-
-    }
-
-
     void addOrderItem(Long cartId, Long productId, int quantity) {
-
         Optional<OrderEntity> entity = ordersRepo.findById(cartId);
 
         if (entity.isEmpty()) return;
 
-        Order cart = ToDomain.ToOrder(entity.get());
-        List<OrderItem> items = cart.getOrderItems();
+        OrderEntity cart = entity.get();
+        List<OrderItemEntity> items = cart.getOrderItems();
 
-        Product product = ToDomain.toProduct((productsRepo.findById(productId)).get());
+        Optional<ProductEntity> entity2 = productsRepo.findById(productId);
+        if (entity2.isEmpty()) return;
+        ProductEntity product = entity2.get();
 
-        OrderItem orderItem = new OrderItem();
+        OrderItemEntity orderItem = new OrderItemEntity();
         orderItem.setProduct(product);
         orderItem.setQuantity(quantity);
 
         boolean inCart = false;
-        for (OrderItem item : items) {
-            if (item.getProduct().getId() == productId) {
+        for (OrderItemEntity item : items) {
+            if (Objects.equals(item.getProduct().getId(), productId)) {
                 item.setQuantity(item.getQuantity() + quantity);
                 inCart = true;
                 break;
@@ -55,7 +50,7 @@ public class OrdersService {
            cart.setOrderItems(items);
         }
 
-        ToEntity(cart)
+        ordersRepo.save( cart);
 
 
     }
@@ -64,11 +59,11 @@ public class OrdersService {
     void RemoveOrderItem(long CartID, int productID){
         Optional<OrderEntity> entity= ordersRepo.findById(CartID);
         if (entity.isEmpty()) return;
-        Order cart = ToDomain.ToOrder(entity.get());
+        OrderEntity cart = entity.get();
 
-        List<OrderItem> Orderitems= cart.getOrderItems();
+        List<OrderItemEntity> Orderitems= cart.getOrderItems();
 
-        for(OrderItem orderItem : Orderitems){
+        for(OrderItemEntity orderItem : Orderitems){
             if (orderItem.getProduct().getId()==productID){
 
                 if (orderItem.getQuantity()>1){
@@ -97,9 +92,8 @@ public class OrdersService {
         cart.ifPresent(ordersRepo::delete);
     }
 
-    public Product getCartByID(long id) {
+    public Order getCartByID(long id) {
         Optional<OrderEntity> entity= ordersRepo.findById(id);
-        if (entity.isPresent()){return ToDomain.ToOrder(entity.get());}
-        else {return null;}
+        return entity.map(ToDomain::Order).orElse(null);
     }
 }

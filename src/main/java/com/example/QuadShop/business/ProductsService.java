@@ -21,21 +21,32 @@ public class ProductsService {
          List<ProductEntity> entities = productsRepo.findAllByCategory(category);
          List<Product> products = new ArrayList<>();
          for (ProductEntity entity : entities) {
-             products.add(ToDomain.toProduct(entity));
+             products.add(ToDomain.Product(entity));
          }
-
          return products;
     }
-    public List<Product> GetAllProdducts(){
+    public List<Product> GetAllProducts(){
         List<ProductEntity> entities = productsRepo.findAll();
+        System.out.println(entities.getFirst().getImages());
         List<Product> products = new ArrayList<>();
         for (ProductEntity entity : entities) {
-            products.add(ToDomain.toProduct(entity));
+            products.add(ToDomain.Product(entity));
         }
         return products;
     }
+
+    public List<Product> SearchProducts(String name){
+        List<ProductEntity> entities = productsRepo.findAllByNameContains(name);
+        List<Product> products = new ArrayList<>();
+        for (ProductEntity entity : entities) {
+            products.add(ToDomain.Product(entity));
+        }
+        return products;
+    }
+
     public Product GetProductById(Long id){
         ProductEntity entity = productsRepo.findById(id).orElse(null);
-        return ToDomain.toProduct(entity);
+        System.out.println(entity);
+        return ToDomain.Product(entity);
     }
 }

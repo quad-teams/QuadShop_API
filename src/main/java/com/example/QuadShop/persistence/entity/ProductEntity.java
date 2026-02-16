@@ -36,10 +36,4 @@ public class ProductEntity {
     @JoinColumn(name = "product_id")
     private List<ImageEntity> images;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private List<SpecificationEntity> specifications;
-
-
-
 }

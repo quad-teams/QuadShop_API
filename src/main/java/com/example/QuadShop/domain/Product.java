@@ -14,8 +14,7 @@ public class Product {
     String name;
     String description;
     BigDecimal price;
-    List<Specification> Specifications;
-    List<Image> Images;
+    List<Image> images;
     List<Size> sizes;
 
 }
