@@ -93,7 +93,7 @@ public class OrdersService {
     }
 
     public Order getCartByID(long id) {
-        Optional<OrderEntity> entity= ordersRepo.findById(id);
+        Optional<OrderEntity> entity= ordersRepo.findByStatusAndId("InCart",id);
         return entity.map(ToDomain::Order).orElse(null);
     }
 }
