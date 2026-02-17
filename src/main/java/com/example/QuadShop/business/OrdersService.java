@@ -21,7 +21,7 @@ public class OrdersService {
     public final ProductsRepo productsRepo;
     private final OrdersRepo ordersRepo;
 
-    void addOrderItem(Long cartId, Long productId, int quantity) {
+    public void addOrderItem(Long cartId, Long productId, int quantity, String size) {
         Optional<OrderEntity> entity = ordersRepo.findById(cartId);
 
         if (entity.isEmpty()) return;
@@ -36,6 +36,7 @@ public class OrdersService {
         OrderItemEntity orderItem = new OrderItemEntity();
         orderItem.setProduct(product);
         orderItem.setQuantity(quantity);
+        orderItem.setSize(size);
 
         boolean inCart = false;
         for (OrderItemEntity item : items) {
@@ -51,8 +52,6 @@ public class OrdersService {
         }
 
         ordersRepo.save( cart);
-
-
     }
 
 
@@ -95,5 +94,16 @@ public class OrdersService {
     public Order getCartByID(long id) {
         Optional<OrderEntity> entity= ordersRepo.findByStatusAndId("InCart",id);
         return entity.map(ToDomain::Order).orElse(null);
+    }
+
+    public Long CreateCart(){
+        OrderEntity NewCart = new OrderEntity();
+        NewCart.setStatus("InCart");
+
+
+        System.out.println("creating cart");
+
+        OrderEntity cart = ordersRepo.save(NewCart);
+        return cart.getId();
     }
 }

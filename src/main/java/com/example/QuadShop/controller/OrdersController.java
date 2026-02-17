@@ -2,7 +2,9 @@ package com.example.QuadShop.controller;
 
 import com.example.QuadShop.business.OrdersService;
 import com.example.QuadShop.business.ProductsService;
+import com.example.QuadShop.controller.dto.AddOrderItemRequest;
 import com.example.QuadShop.domain.Order;
+import com.example.QuadShop.domain.OrderItem;
 import com.example.QuadShop.domain.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +18,23 @@ public class OrdersController {
     private final OrdersService service;
 
     @GetMapping("/{id}" )
-    public Order GetCart(@PathVariable long id) {
+    public Order GetOrder(@PathVariable long id) {
         return service.getCartByID(id);
     }
 
-    @PostMapping("/checkout")
-    public void Checkout(@RequestBody Order order) {
-        /// service.checkout()
+    @PostMapping
+    public Long NewCart() {
+        return service.CreateCart();
     }
+
+    @PostMapping("/AddOrderItem")
+    public void addOrderItem(AddOrderItemRequest request) {
+        System.out.println(request);
+        service.addOrderItem(request.cartId,
+                request.productId,
+                request.quantity,
+                request.size);
+    }
+
 
 }

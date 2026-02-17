@@ -78,7 +78,8 @@ public class ToDomain {
         return new OrderItem(
                 entity.getId(),
                 Product(entity.getProduct()),
-                entity.getQuantity()
+                entity.getQuantity(),
+                entity.getSize()
         );
     }
 

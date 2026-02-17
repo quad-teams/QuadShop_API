@@ -13,5 +13,6 @@ public class OrderItem {
    Long id;
    Product product;
    int quantity;
+   String size;
 
 }

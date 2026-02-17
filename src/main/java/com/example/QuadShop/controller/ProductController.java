@@ -35,7 +35,7 @@ public class ProductController {
     }
 
     @GetMapping(params = "search")
-    public List<Product> getProductsByC(String search) {
+    public List<Product> getProductsBySearch(String search) {
         return service.SearchProducts(search);
     }
 
