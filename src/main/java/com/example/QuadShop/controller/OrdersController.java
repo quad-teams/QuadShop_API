@@ -19,6 +19,7 @@ public class OrdersController {
 
     @GetMapping("/{id}" )
     public Order GetOrder(@PathVariable long id) {
+        System.out.println("getting cart");
         return service.getCartByID(id);
     }
 
@@ -35,5 +36,14 @@ public class OrdersController {
                 request.quantity,
                 request.size);
     }
+
+    @PutMapping("/UpdateOrderItem/{id}")
+    public void updateOrderItem(
+            @PathVariable Long id,
+            @RequestParam int quantity
+    ) {
+        service.updateOrderItem(id, quantity);
+    }
+
 
 }

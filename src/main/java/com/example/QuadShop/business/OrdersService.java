@@ -2,6 +2,7 @@ package com.example.QuadShop.business;
 
 import com.example.QuadShop.business.Mapper.ToDomain;
 import com.example.QuadShop.domain.Order;
+import com.example.QuadShop.persistence.OrderItemsRepo;
 import com.example.QuadShop.persistence.OrdersRepo;
 import com.example.QuadShop.persistence.ProductsRepo;
 import com.example.QuadShop.persistence.entity.OrderEntity;
@@ -20,9 +21,13 @@ import java.util.Optional;
 public class OrdersService {
     public final ProductsRepo productsRepo;
     private final OrdersRepo ordersRepo;
+    private final OrderItemsRepo orderItemsRepo;
 
     public void addOrderItem(Long cartId, Long productId, int quantity, String size) {
         Optional<OrderEntity> entity = ordersRepo.findById(cartId);
+
+        System.out.println("Cart Id is "+cartId+" and product ID is "+productId);
+
 
         if (entity.isEmpty()) return;
 
@@ -107,5 +112,14 @@ public class OrdersService {
 
         OrderEntity cart = ordersRepo.save(NewCart);
         return cart.getId();
+    }
+
+    public void updateOrderItem(Long id, int quantity) {
+        OrderItemEntity item = orderItemsRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order item not found"));
+
+        item.setQuantity(quantity);
+
+        orderItemsRepo.save(item);
     }
 }
