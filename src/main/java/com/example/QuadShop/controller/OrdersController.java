@@ -28,13 +28,12 @@ public class OrdersController {
     }
 
     @PostMapping("/AddOrderItem")
-    public void addOrderItem(AddOrderItemRequest request) {
-        System.out.println(request);
+    public void addOrderItem(@RequestBody AddOrderItemRequest request) {
+        System.out.println("hahahahah  "+request);
         service.addOrderItem(request.cartId,
                 request.productId,
                 request.quantity,
                 request.size);
     }
-
 
 }

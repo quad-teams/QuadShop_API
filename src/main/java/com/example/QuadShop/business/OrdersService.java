@@ -47,8 +47,10 @@ public class OrdersService {
             }
         }
         if (!inCart) {
-           items.add(orderItem);
-           cart.setOrderItems(items);
+            orderItem.setOrder(cart);
+            items.add(orderItem);
+            orderItem.setOrder(cart);
+            cart.getOrderItems().add(orderItem);
         }
 
         ordersRepo.save( cart);
