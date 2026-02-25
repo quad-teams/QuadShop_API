@@ -1,6 +1,6 @@
 CREATE TABLE products (
-                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                          name VARCHAR(255) NOT NULL,
+                          id BIGINT AUTO_INCREMENT ,
+                          name VARCHAR(255) NOT NULL PRIMARY KEY,
                           description TEXT NOT NULL,
                           price DECIMAL(19, 2) NOT NULL,
                           category VARCHAR(255) NOT NULL
@@ -20,12 +20,6 @@ CREATE TABLE sizes (
                        CONSTRAINT fk_sizes_product FOREIGN KEY (product_id) REFERENCES products (id)
 );
 
-CREATE TABLE product_images (
-                                product_id BIGINT NOT NULL,
-                                image_id VARCHAR(255) NOT NULL,
-                                CONSTRAINT fk_product_images_product FOREIGN KEY (product_id) REFERENCES products (id),
-                                CONSTRAINT fk_product_images_image FOREIGN KEY (image_id) REFERENCES images (id)
-);
 
 CREATE TABLE orders (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,

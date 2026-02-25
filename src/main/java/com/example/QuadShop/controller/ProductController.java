@@ -18,7 +18,6 @@ public class ProductController {
 
     @GetMapping
     public List<Product> getAllProducts() {
-        System.out.println(">>> Controller hit");        // add this
         return service.GetAllProducts();
     }
 
@@ -30,7 +29,6 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Product getProductsByID(@PathVariable long id) {
-        System.out.println(">>> Controller hit");
         return service.GetProductById(id);
     }
 
