@@ -5,7 +5,6 @@ import com.example.QuadShop.persistence.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ToDomain {
 
@@ -16,14 +15,27 @@ public class ToDomain {
         List<Image> images = new ArrayList<>();
         if (entity.getImages() != null) {
             for (ImageEntity ie : entity.getImages()) {
-                images.add(Image(ie));
+                images.add(new Image(
+                        ie.getId(),
+                        ie.getUrl()));
             }
         }
 
         List<Size> sizes = new ArrayList<>();
         if (entity.getSizes() != null) {
             for (SizeEntity se : entity.getSizes()) {
-                sizes.add(Size(se));
+                sizes.add(new Size(
+                        se.getId(),
+                        se.getName()));
+            }
+        }
+
+        List<Specification> specifications = new ArrayList<>();
+        if (entity.getSpecifications() != null) {
+            for (SpecificationEntity se : entity.getSpecifications()) {
+                specifications.add(new Specification(se.getId(),
+                        se.getKey(),
+                        se.getValue()));
             }
         }
 
@@ -32,26 +44,10 @@ public class ToDomain {
                 entity.getName(),
                 entity.getDescription(),
                 entity.getPrice(),
+                entity.getCategory(),
                 images,
-                sizes
-        );
-    }
-
-    // SizeEntity → Size
-    private static Size Size(SizeEntity entity) {
-        if (entity == null) return null;
-        return new Size(
-                entity.getId(),
-                entity.getName()
-        );
-    }
-
-    // ImageEntity → Image
-    private static Image Image(ImageEntity entity) {
-        if (entity == null) return null;
-        return new Image(
-                entity.getId(),
-                entity.getUrl()
+                sizes,
+                specifications
         );
     }
 

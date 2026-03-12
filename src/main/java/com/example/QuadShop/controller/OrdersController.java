@@ -1,35 +1,31 @@
 package com.example.QuadShop.controller;
 
 import com.example.QuadShop.business.OrdersService;
-import com.example.QuadShop.business.ProductsService;
-import com.example.QuadShop.controller.dto.AddOrderItemRequest;
+import com.example.QuadShop.controller.dto.Requests.AddOrderItem;
+import com.example.QuadShop.controller.dto.Requests.UpdateOrderItem;
 import com.example.QuadShop.domain.Order;
-import com.example.QuadShop.domain.OrderItem;
-import com.example.QuadShop.domain.Product;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @AllArgsConstructor
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrdersController {
     private final OrdersService service;
 
     @GetMapping("/{id}" )
     public Order GetOrder(@PathVariable long id) {
         System.out.println("getting cart");
-        return service.getCartByID(id);
+        return service.getByID(id);
     }
 
     @PostMapping
     public Long NewCart() {
-        return service.CreateCart();
+        return service.createOrder();
     }
 
     @PostMapping("/AddOrderItem")
-    public void addOrderItem(@RequestBody AddOrderItemRequest request) {
+    public void addOrderItem(@RequestBody AddOrderItem request) {
         System.out.println("hahahahah  "+request);
         service.addOrderItem(request.cartId,
                 request.productId,
@@ -40,9 +36,9 @@ public class OrdersController {
     @PutMapping("/UpdateOrderItem/{id}")
     public void updateOrderItem(
             @PathVariable Long id,
-            @RequestParam int quantity
+            @RequestBody UpdateOrderItem request
     ) {
-        service.updateOrderItem(id, quantity);
+        service.updateOrderItem(id, request);
     }
 
 

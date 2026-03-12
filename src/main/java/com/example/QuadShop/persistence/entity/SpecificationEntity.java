@@ -4,22 +4,22 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
-@Table(name = "sizes")
+@Table(name = "specifications")
 @Data
 @NoArgsConstructor
-public class SizeEntity {
+public class SpecificationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String key;
+
+    @Column(nullable = false)
+    private String value;
 
     @Column(nullable = false)
     private Long product_id;
-
 }

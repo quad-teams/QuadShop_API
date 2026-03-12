@@ -1,6 +1,8 @@
 package com.example.QuadShop.business;
 
 import com.example.QuadShop.business.Mapper.ToDomain;
+import com.example.QuadShop.controller.dto.Requests.UpdateOrder;
+import com.example.QuadShop.controller.dto.Requests.UpdateOrderItem;
 import com.example.QuadShop.domain.Order;
 import com.example.QuadShop.persistence.OrderItemsRepo;
 import com.example.QuadShop.persistence.OrdersRepo;
@@ -19,107 +21,70 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class OrdersService {
-    public final ProductsRepo productsRepo;
+    private final ProductsRepo productsRepo;
     private final OrdersRepo ordersRepo;
     private final OrderItemsRepo orderItemsRepo;
 
+
+
+    public Order getByID(long id) {
+        Optional<OrderEntity> entity= ordersRepo.findByStatusAndId("InCart",id);
+        return entity.map(ToDomain::Order).orElse(null);
+    }
+
+
+    public Long createOrder(){
+        OrderEntity NewCart = new OrderEntity();
+        NewCart.setStatus("InCart");
+        OrderEntity cart = ordersRepo.save(NewCart);
+        return cart.getId();
+    }
+
+    public void UpdateOrder(UpdateOrder request) {
+        OrderEntity order= ordersRepo.findById(request.id).orElse(null);
+        if (order == null) return;
+        order.setStatus(request.status);
+        ordersRepo.save(order);
+    }
+
+    public void Checkout(Long id) {
+
+    }
+
+    // -------------------------------------------------------------------------
+    // -------------------------- ORDER ITEMS  ---------------------------------
+    // -------------------------------------------------------------------------
+
+
+
     public void addOrderItem(Long cartId, Long productId, int quantity, String size) {
-        Optional<OrderEntity> entity = ordersRepo.findById(cartId);
+        OrderEntity cart = ordersRepo.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        System.out.println("Cart Id is "+cartId+" and product ID is "+productId);
-
-
-        if (entity.isEmpty()) return;
-
-        OrderEntity cart = entity.get();
-        List<OrderItemEntity> items = cart.getOrderItems();
-
-        Optional<ProductEntity> entity2 = productsRepo.findById(productId);
-        if (entity2.isEmpty()) return;
-        ProductEntity product = entity2.get();
+        ProductEntity product = productsRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
         OrderItemEntity orderItem = new OrderItemEntity();
         orderItem.setProduct(product);
         orderItem.setQuantity(quantity);
         orderItem.setSize(size);
 
-        boolean inCart = false;
-        for (OrderItemEntity item : items) {
-            if (Objects.equals(item.getProduct().getId(), productId)) {
-                item.setQuantity(item.getQuantity() + quantity);
-                inCart = true;
-                break;
-            }
-        }
-        if (!inCart) {
-            orderItem.setOrder(cart);
-            items.add(orderItem);
-            orderItem.setOrder(cart);
-            cart.getOrderItems().add(orderItem);
-        }
-
-        ordersRepo.save( cart);
+        orderItemsRepo.save(orderItem);
     }
 
 
-    void RemoveOrderItem(long CartID, int productID){
-        Optional<OrderEntity> entity= ordersRepo.findById(CartID);
-        if (entity.isEmpty()) return;
-        OrderEntity cart = entity.get();
+    public void updateOrderItem(Long id, UpdateOrderItem request) {
 
-        List<OrderItemEntity> Orderitems= cart.getOrderItems();
+        OrderItemEntity orderItem = orderItemsRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        for(OrderItemEntity orderItem : Orderitems){
-            if (orderItem.getProduct().getId()==productID){
+        orderItem.setQuantity(request.quantity);
+        orderItem.setSize(request.size);
 
-                if (orderItem.getQuantity()>1){
-                    orderItem.setQuantity(orderItem.getQuantity()-1);
-                }
-                else{
-                    Orderitems.remove(orderItem);
-                }
-                break;
-            }
-        }
-        cart.setOrderItems(Orderitems);
-        ordersRepo.save(cart);
+        orderItemsRepo.save(orderItem);
     }
 
-    void ChangeStatus (long CartID, String status){
-        Optional<OrderEntity> entity= ordersRepo.findById(CartID);
-        if (entity.isPresent()){
-            OrderEntity Cart=entity.get();
-            ordersRepo.save(Cart);
-        }
-    }
-
-    void CancelOrder(long CartID){
-        Optional<OrderEntity> cart= ordersRepo.findById(CartID);
-        cart.ifPresent(ordersRepo::delete);
-    }
-
-    public Order getCartByID(long id) {
-        Optional<OrderEntity> entity= ordersRepo.findByStatusAndId("InCart",id);
-        return entity.map(ToDomain::Order).orElse(null);
-    }
-
-    public Long CreateCart(){
-        OrderEntity NewCart = new OrderEntity();
-        NewCart.setStatus("InCart");
-
-
-        System.out.println("creating cart");
-
-        OrderEntity cart = ordersRepo.save(NewCart);
-        return cart.getId();
-    }
-
-    public void updateOrderItem(Long id, int quantity) {
-        OrderItemEntity item = orderItemsRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order item not found"));
-
-        item.setQuantity(quantity);
-
-        orderItemsRepo.save(item);
+    public void deleteOrderItem(Long orderItemId) {
+        orderItemsRepo.deleteById(orderItemId);
     }
 }
