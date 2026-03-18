@@ -126,14 +126,6 @@ Or run directly from IntelliJ IDEA.
 
 ---
 
-## 🧪 Running Tests
-
-```bash
-./gradlew test
-```
-
----
-
 ## 📄 License
 
 This project is owned by **Quad Solutions**. Unauthorized distribution or reproduction is prohibited.
