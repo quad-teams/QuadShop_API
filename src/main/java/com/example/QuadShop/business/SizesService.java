@@ -27,7 +27,7 @@ public class SizesService {
 
         SizeEntity size = new SizeEntity();
         size.setName(request.getSize());
-        size.setProduct_id(request.getProductId());
+        size.setProduct(product.get());
 
         SizeEntity sizeSaved = sizesRepo.save(size);
 

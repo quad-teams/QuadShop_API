@@ -12,30 +12,46 @@ public class ToDomain {
     public static Product Product(ProductEntity entity) {
         if (entity == null) return null;
 
+        // Convert images
         List<Image> images = new ArrayList<>();
         if (entity.getImages() != null) {
             for (ImageEntity ie : entity.getImages()) {
                 images.add(new Image(
                         ie.getId(),
-                        ie.getUrl()));
+                        ie.getUrl()
+                ));
             }
         }
 
+        // Convert default image
+        Image defaultImage = Image(entity.getDefaultImage());
+
+        // Push default image to the front
+        if (defaultImage != null) {
+            images.removeIf(img -> img.getId().equals(defaultImage.getId()));
+            images.addFirst(defaultImage);
+        }
+
+        // Convert sizes
         List<Size> sizes = new ArrayList<>();
         if (entity.getSizes() != null) {
             for (SizeEntity se : entity.getSizes()) {
                 sizes.add(new Size(
                         se.getId(),
-                        se.getName()));
+                        se.getName()
+                ));
             }
         }
 
+        // Convert specifications
         List<Specification> specifications = new ArrayList<>();
         if (entity.getSpecifications() != null) {
             for (SpecificationEntity se : entity.getSpecifications()) {
-                specifications.add(new Specification(se.getId(),
+                specifications.add(new Specification(
+                        se.getId(),
                         se.getKey(),
-                        se.getValue()));
+                        se.getValue()
+                ));
             }
         }
 
@@ -45,6 +61,7 @@ public class ToDomain {
                 entity.getDescription(),
                 entity.getPrice(),
                 entity.getCategory(),
+                defaultImage,
                 images,
                 sizes,
                 specifications
@@ -77,6 +94,12 @@ public class ToDomain {
                 entity.getQuantity(),
                 entity.getSize()
         );
+    }
+
+    private static Image Image(ImageEntity entity) {
+        if (entity == null) return null;
+
+        return new Image(entity.getId(), entity.getUrl());
     }
 
 }

@@ -46,14 +46,18 @@ public class ProductsService {
             products.add(ToDomain.Product(entity));
         }
         return products;
+
     }
 
     public Product GetProductById(Long id){
         ProductEntity entity = productsRepo.findById(id).orElse(null);
+        System.out.println(ToDomain.Product(entity));
         return ToDomain.Product(entity);
     }
 
     public void delete(long id) {
-        productsRepo.deleteById(id);
+        ProductEntity entity = productsRepo.findById(id).orElse(null);
+        assert entity != null;
+        productsRepo.delete(entity);
     }
 }

@@ -15,7 +15,9 @@ public class Product {
     String description;
     BigDecimal price;
     String category;
+    Image defaultImage;
     List<Image> images;
     List<Size> sizes;
     List<Specification> specifications;
+
 }

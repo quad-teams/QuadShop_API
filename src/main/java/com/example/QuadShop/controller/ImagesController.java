@@ -24,4 +24,9 @@ public class ImagesController {
     public void DeleteImage(@PathVariable String id) throws Exception {
        service.deleteImage(id);
     }
+
+    @PutMapping("/{id}")
+    public void EditImage(@PathVariable String id)  {
+        service.setDefault(id);
+    }
 }

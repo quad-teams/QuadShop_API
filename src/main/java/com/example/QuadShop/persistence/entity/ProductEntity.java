@@ -3,8 +3,11 @@ package com.example.QuadShop.persistence.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,6 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ProductEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +23,7 @@ public class ProductEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)
@@ -28,16 +32,23 @@ public class ProductEntity {
     @Column(nullable = false)
     private String category;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private List<SizeEntity> sizes;
+    @OneToOne
+    @JoinColumn(name = "default_image_id")
+    private ImageEntity defaultImage;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private List<ImageEntity> images;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<SizeEntity> sizes = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private List<SpecificationEntity> specifications;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
 
+    @EqualsAndHashCode.Exclude
+    private List<ImageEntity> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<SpecificationEntity> specifications = new ArrayList<>();
 }

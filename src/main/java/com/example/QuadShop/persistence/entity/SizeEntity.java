@@ -2,7 +2,9 @@ package com.example.QuadShop.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -19,7 +21,11 @@ public class SizeEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Long product_id;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private ProductEntity product;
+
 
 }

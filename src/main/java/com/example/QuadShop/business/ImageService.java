@@ -34,7 +34,7 @@ public class ImageService {
             ImageEntity image = new ImageEntity();
             image.setId(metaData.get("public_id").toString());
             image.setUrl(metaData.get("url").toString());
-            image.setProduct_id(request.ProductId);
+            image.setProduct(productEntity.get());
 
             imagesRepo.save(image);
 
@@ -45,10 +45,22 @@ public class ImageService {
         }
     }
 
-    public void deleteImage(String publicId) throws Exception {
-        Optional<ImageEntity> imageEntity =  imagesRepo.findById(publicId);
+    public void deleteImage(String id) throws Exception {
+        Optional<ImageEntity> imageEntity =  imagesRepo.findById(id);
         if (imageEntity.isEmpty()) { return;}
         imagesRepo.delete(imageEntity.get());
-        cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+        cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
+    }
+
+    public void setDefault(String imageId) {
+
+        ImageEntity image = imagesRepo.findById(imageId)
+                .orElseThrow(() -> new RuntimeException("Image not found"));
+
+        ProductEntity product = image.getProduct();
+
+        product.setDefaultImage(image);
+
+        productsRepo.save(product);
     }
 }
