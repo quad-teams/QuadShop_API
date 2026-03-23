@@ -1,12 +1,10 @@
-package com.example.QuadShop.persistence.entity;
+package com.example.QuadShop.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.List;
 
 @Entity
 @Table(name = "sizes")

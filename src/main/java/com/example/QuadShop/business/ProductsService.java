@@ -5,7 +5,7 @@ import com.example.QuadShop.controller.dto.Requests.AddProduct;
 import com.example.QuadShop.controller.dto.Requests.UpdateProduct;
 import com.example.QuadShop.domain.Product;
 import com.example.QuadShop.persistence.ProductsRepo;
-import com.example.QuadShop.persistence.entity.ProductEntity;
+import com.example.QuadShop.domain.entity.ProductEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

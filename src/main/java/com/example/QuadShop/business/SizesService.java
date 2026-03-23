@@ -1,13 +1,11 @@
 package com.example.QuadShop.business;
 
-import com.cloudinary.utils.ObjectUtils;
 import com.example.QuadShop.controller.dto.Requests.AddSize;
 import com.example.QuadShop.domain.Size;
 import com.example.QuadShop.persistence.ProductsRepo;
 import com.example.QuadShop.persistence.SizesRepo;
-import com.example.QuadShop.persistence.entity.ImageEntity;
-import com.example.QuadShop.persistence.entity.ProductEntity;
-import com.example.QuadShop.persistence.entity.SizeEntity;
+import com.example.QuadShop.domain.entity.ProductEntity;
+import com.example.QuadShop.domain.entity.SizeEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

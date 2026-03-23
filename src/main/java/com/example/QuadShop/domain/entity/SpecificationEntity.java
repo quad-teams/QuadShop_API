@@ -1,4 +1,4 @@
-package com.example.QuadShop.persistence.entity;
+package com.example.QuadShop.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,24 +6,25 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 @Entity
-@Table(name = "images")
+@Table(name = "specifications")
 @Data
 @NoArgsConstructor
-public class ImageEntity {
+public class SpecificationEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
-    private String url;
+    private String key;
+
+    @Column(nullable = false)
+    private String value;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private ProductEntity product;
-    ;
 }

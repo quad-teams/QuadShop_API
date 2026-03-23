@@ -1,6 +1,5 @@
-package com.example.QuadShop.persistence.entity;
+package com.example.QuadShop.domain.entity;
 
-import com.example.QuadShop.persistence.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,24 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "specifications")
+@Table(name = "images")
 @Data
 @NoArgsConstructor
-public class SpecificationEntity {
+public class ImageEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false)
-    private String key;
-
-    @Column(nullable = false)
-    private String value;
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private ProductEntity product;
+    ;
 }

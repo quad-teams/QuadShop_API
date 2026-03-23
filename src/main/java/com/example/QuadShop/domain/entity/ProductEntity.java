@@ -1,4 +1,4 @@
-package com.example.QuadShop.persistence.entity;
+package com.example.QuadShop.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

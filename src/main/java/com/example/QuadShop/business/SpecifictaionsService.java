@@ -1,13 +1,10 @@
 package com.example.QuadShop.business;
 
-import com.example.QuadShop.controller.dto.Requests.AddSize;
 import com.example.QuadShop.controller.dto.Requests.AddSpecification;
 import com.example.QuadShop.persistence.ProductsRepo;
-import com.example.QuadShop.persistence.SizesRepo;
 import com.example.QuadShop.persistence.SpecificationsRepo;
-import com.example.QuadShop.persistence.entity.ProductEntity;
-import com.example.QuadShop.persistence.entity.SizeEntity;
-import com.example.QuadShop.persistence.entity.SpecificationEntity;
+import com.example.QuadShop.domain.entity.ProductEntity;
+import com.example.QuadShop.domain.entity.SpecificationEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;

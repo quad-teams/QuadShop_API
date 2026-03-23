@@ -1,7 +1,7 @@
 package com.example.QuadShop.business.Mapper;
 
 import com.example.QuadShop.domain.*;
-import com.example.QuadShop.persistence.entity.*;
+import com.example.QuadShop.domain.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.example.QuadShop.persistence;
 
-import com.example.QuadShop.persistence.entity.ImageEntity;
-import com.example.QuadShop.persistence.entity.SizeEntity;
+import com.example.QuadShop.domain.entity.SizeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

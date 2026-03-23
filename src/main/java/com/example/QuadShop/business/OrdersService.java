@@ -7,14 +7,12 @@ import com.example.QuadShop.domain.Order;
 import com.example.QuadShop.persistence.OrderItemsRepo;
 import com.example.QuadShop.persistence.OrdersRepo;
 import com.example.QuadShop.persistence.ProductsRepo;
-import com.example.QuadShop.persistence.entity.OrderEntity;
-import com.example.QuadShop.persistence.entity.OrderItemEntity;
-import com.example.QuadShop.persistence.entity.ProductEntity;
+import com.example.QuadShop.domain.entity.OrderEntity;
+import com.example.QuadShop.domain.entity.OrderItemEntity;
+import com.example.QuadShop.domain.entity.ProductEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 
