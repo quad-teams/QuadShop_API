@@ -32,6 +32,9 @@ public class ProductEntity {
     @Column(nullable = false)
     private String category;
 
+    @Column(nullable = true)
+    private String subCategory;
+
     @OneToOne
     @JoinColumn(name = "default_image_id")
     private ImageEntity defaultImage;

@@ -20,6 +20,12 @@ public class ProductController {
         return service.GetAllProducts();
     }
 
+    @GetMapping("/category")
+    public List<Product> getbycategory(@RequestParam String category) {
+        return service.GetAllProductsByCategory(category);
+    }
+
+
     @GetMapping("/{id}")
     public Product getProductsByID(@PathVariable long id) {
         return service.GetProductById(id);

@@ -61,6 +61,7 @@ public class ToDomain {
                 entity.getDescription(),
                 entity.getPrice(),
                 entity.getCategory(),
+                entity.getSubCategory(),
                 defaultImage,
                 images,
                 sizes,

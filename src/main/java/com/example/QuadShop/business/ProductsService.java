@@ -29,10 +29,13 @@ public class ProductsService {
     }
 
     public void EditProduct(UpdateProduct request) {
+
+        System.out.println(request);
         ProductEntity product = productsRepo.findById(request.id).orElse(null);
         if (product == null) return;
         product.setName(request.name);
         product.setCategory(request.category);
+        product.setSubCategory(request.subCategory);
         product.setDescription(request.description);
         product.setPrice(request.price);
         productsRepo.save(product);
@@ -46,7 +49,15 @@ public class ProductsService {
             products.add(ToDomain.Product(entity));
         }
         return products;
+    }
 
+    public List<Product> GetAllProductsByCategory(String category){
+        List<ProductEntity> entities = productsRepo.findAllByCategory(category);
+        List<Product> products = new ArrayList<>();
+        for (ProductEntity entity : entities) {
+            products.add(ToDomain.Product(entity));
+        }
+        return products;
     }
 
     public Product GetProductById(Long id){
