@@ -20,7 +20,7 @@ public class ProductController {
         return service.GetAllProducts();
     }
 
-    @GetMapping("/category/[category]")
+    @GetMapping("/category")
     public List<Product> getbycategory(@RequestParam String category) {
         return service.GetAllProductsByCategory(category);
     }
