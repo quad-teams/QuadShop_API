@@ -35,7 +35,7 @@ public class ProductsService {
         if (product == null) return;
         product.setName(request.name);
         product.setCategory(request.category);
-        product.setSubCategory(request.subCategory);
+        product.setSubCategory(request.sub_category);
         product.setDescription(request.description);
         product.setPrice(request.price);
         productsRepo.save(product);

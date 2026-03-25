@@ -11,5 +11,5 @@ public class UpdateProduct {
     public String category;
     public String description;
     public BigDecimal price;
-    public String subCategory;
+    public String sub_category;
 }
