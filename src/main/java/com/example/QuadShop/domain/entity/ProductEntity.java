@@ -35,22 +35,15 @@ public class ProductEntity {
     @Column(nullable = true)
     private String subCategory;
 
-    @OneToOne
-    @JoinColumn(name = "default_image_id")
-    private MediaEntity defaultImage;
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<StockEntity> stock = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<MediaEntity> media = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<SpecificationEntity> specifications = new ArrayList<>();
 }

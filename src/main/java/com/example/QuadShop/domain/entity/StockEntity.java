@@ -16,10 +16,10 @@ public class StockEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String size;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String colour;
 
     @Column(nullable = false)

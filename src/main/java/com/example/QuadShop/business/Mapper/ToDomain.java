@@ -13,16 +13,22 @@ public class ToDomain {
         if (entity == null) return null;
 
         // Convert images
-        List<Media> media = new ArrayList<>();
+        Media video=null;
+        List<Media> images = new ArrayList<>();
         if (entity.getMedia() != null) {
             for (MediaEntity EM : entity.getMedia()) {
                 if (EM.getType().equals("image")) {
-                media.add(new Media(
+                images.add(new Media(
                         EM.getId(),
                         EM.getUrl(),
                         EM.getType()
 
                 ));}
+                else if (EM.getType().equals("video")) {
+                    video = new Media(EM.getId(),
+                            EM.getUrl(),
+                            EM.getType());
+                }
             }
         }
 
@@ -58,7 +64,8 @@ public class ToDomain {
                 entity.getPrice(),
                 entity.getCategory(),
                 entity.getSubCategory(),
-                media,
+                video,
+                images,
                 stock,
                 specifications
         );

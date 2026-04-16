@@ -15,7 +15,8 @@ public class Product {
     BigDecimal price;
     String category;
     String sub_category;
-    List<Media> media;
+    Media video;
+    List<Media> images;
     List<Stock> stock;
     List<Specification> specifications;
 }

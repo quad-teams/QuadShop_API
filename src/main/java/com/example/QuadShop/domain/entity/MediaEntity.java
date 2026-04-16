@@ -26,5 +26,4 @@ public class MediaEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private ProductEntity product;
-    ;
 }

@@ -48,6 +48,8 @@ public class ProductsService {
         for (ProductEntity entity : entities) {
             products.add(ToDomain.Product(entity));
         }
+
+        System.out.println(entities.getFirst());
         return products;
     }
 
