@@ -1,10 +1,10 @@
 package com.example.QuadShop.controller.dto.Requests;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class AddSize {
+public class AddStock {
     public long productId;
     public String size;
+    public String colour;
 }

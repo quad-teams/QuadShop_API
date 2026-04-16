@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Size {
-    Long id;
-    String size;
+public class Media {
+    String id;
+    String url;
+    String type;
 }

@@ -7,23 +7,24 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "sizes")
+@Table(name = "images")
 @Data
 @NoArgsConstructor
-public class SizeEntity {
+public class MediaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false)
-    private String name;
+    private String url;
+
+    @Column(nullable = false)
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private ProductEntity product;
-
-
+    ;
 }

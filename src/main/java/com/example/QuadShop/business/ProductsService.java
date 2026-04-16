@@ -43,7 +43,7 @@ public class ProductsService {
 
     public List<Product> GetAllProducts(){
         List<ProductEntity> entities = productsRepo.findAll();
-        System.out.println(entities.getFirst().getImages());
+
         List<Product> products = new ArrayList<>();
         for (ProductEntity entity : entities) {
             products.add(ToDomain.Product(entity));

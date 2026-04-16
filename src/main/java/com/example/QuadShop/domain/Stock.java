@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Image {
-    String id;
-    String url;
+public class Stock {
+    Long id;
+    String size;
+    String colour;
+    long quantity;
 }

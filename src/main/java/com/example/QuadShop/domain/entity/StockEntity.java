@@ -7,21 +7,26 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name = "images")
+@Table(name = "stock")
 @Data
 @NoArgsConstructor
-public class ImageEntity {
+public class StockEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
-    private String url;
+    private String size;
+
+    @Column(nullable = false)
+    private String colour;
+
+    @Column(nullable = false)
+    private long quantity;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     private ProductEntity product;
-    ;
 }
+

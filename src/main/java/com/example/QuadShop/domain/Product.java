@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Dictionary;
 import java.util.List;
 
 @Data
@@ -16,9 +15,7 @@ public class Product {
     BigDecimal price;
     String category;
     String sub_category;
-    Image defaultImage;
-    List<Image> images;
-    List<Size> sizes;
+    List<Media> media;
+    List<Stock> stock;
     List<Specification> specifications;
-
 }

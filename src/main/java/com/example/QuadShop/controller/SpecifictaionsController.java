@@ -1,8 +1,6 @@
 package com.example.QuadShop.controller;
 
-import com.example.QuadShop.business.SizesService;
 import com.example.QuadShop.business.SpecifictaionsService;
-import com.example.QuadShop.controller.dto.Requests.AddSize;
 import com.example.QuadShop.controller.dto.Requests.AddSpecification;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

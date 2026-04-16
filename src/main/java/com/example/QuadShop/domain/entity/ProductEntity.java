@@ -37,18 +37,17 @@ public class ProductEntity {
 
     @OneToOne
     @JoinColumn(name = "default_image_id")
-    private ImageEntity defaultImage;
+    private MediaEntity defaultImage;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<SizeEntity> sizes = new ArrayList<>();
+    private List<StockEntity> stock = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-
     @EqualsAndHashCode.Exclude
-    private List<ImageEntity> images = new ArrayList<>();
+    private List<MediaEntity> media = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
