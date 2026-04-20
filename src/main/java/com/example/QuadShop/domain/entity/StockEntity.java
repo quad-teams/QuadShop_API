@@ -2,7 +2,6 @@ package com.example.QuadShop.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -27,6 +26,8 @@ public class StockEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @ToString.Exclude
     private ProductEntity product;
+
 }
 

@@ -35,15 +35,21 @@ public class ProductEntity {
     @Column(nullable = true)
     private String subCategory;
 
+    @Column(nullable = true)
+    private boolean has_variants;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<StockEntity> stock = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<MediaEntity> media = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<SpecificationEntity> specifications = new ArrayList<>();
 }

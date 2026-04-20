@@ -4,7 +4,9 @@ import lombok.Data;
 
 @Data
 public class AddStock {
+    public long id;
     public long productId;
     public String size;
     public String colour;
+    public long quantity;
 }

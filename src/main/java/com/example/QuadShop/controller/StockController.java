@@ -2,6 +2,7 @@ package com.example.QuadShop.controller;
 
 import com.example.QuadShop.business.StockService;
 import com.example.QuadShop.controller.dto.Requests.AddStock;
+import com.example.QuadShop.controller.dto.Requests.AddVariant;
 import com.example.QuadShop.controller.dto.Requests.UpdateStock;
 import com.example.QuadShop.domain.Stock;
 import lombok.RequiredArgsConstructor;
@@ -25,26 +26,44 @@ public class StockController {
     }
 
     // -----------------------------
-    // READ (single)
-    // -----------------------------
-    @GetMapping("/{id}")
-    public Stock getById(@PathVariable long id) {
-        return service.getById(id);
-    }
-
-    // -----------------------------
     // UPDATE
     // -----------------------------
-    @PutMapping("/{id}")
-    public Stock update(@PathVariable long id, @RequestBody UpdateStock request) {
-        return service.update(id, request);
+    @PutMapping
+    public Stock update(@RequestBody UpdateStock request) {
+        return service.update(request);
+    }
+
+
+
+    // -----------------------------
+    // ADD SIZE
+    // -----------------------------
+    @PostMapping("/products/{productId}/sizes")
+    public List<Stock> addSize(@PathVariable long productId, @RequestBody AddVariant request) {
+        return service.addSize(productId, request.getValue());
     }
 
     // -----------------------------
-    // DELETE
+    // ADD COLOUR
     // -----------------------------
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
-        service.delete(id);
+    @PostMapping("/products/{productId}/colours")
+    public List<Stock> addColour(@PathVariable long productId, @RequestBody AddVariant request) {
+        return service.addColour(productId, request.getValue());
+    }
+
+    // -----------------------------
+    // DELETE SIZE
+    // -----------------------------
+    @DeleteMapping("/products/{productId}/sizes/{size}")
+    public void deleteSize(@PathVariable long productId, @PathVariable String size) {
+        service.removeSize(productId, size);
+    }
+
+    // -----------------------------
+    // DELETE COLOUR
+    // -----------------------------
+    @DeleteMapping("/products/{productId}/colours/{colour}")
+    public void deleteColour(@PathVariable long productId, @PathVariable String colour) {
+        service.removeColour(productId, colour);
     }
 }

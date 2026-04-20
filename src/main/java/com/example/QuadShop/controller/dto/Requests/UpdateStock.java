@@ -4,8 +4,10 @@ import lombok.Data;
 
 @Data
 public class UpdateStock {
-    public long id;
-    public String size;
-    public String colour;
-    public int quantity;
+    private Long id;
+    private Long productId;
+    private String size;
+    private String colour;
+    private int quantity;
+
 }

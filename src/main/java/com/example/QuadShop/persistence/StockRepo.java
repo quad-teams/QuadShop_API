@@ -23,4 +23,6 @@ public interface StockRepo extends JpaRepository<StockEntity, Long> {
     List<StockEntity> findByProduct_Id(Long productId);
 
     List<StockEntity> findAllByProduct_Id(Long productId);
+
+    boolean existsByProduct_IdAndColourAndSizeAndIdNot(Long productId, String colour, String size, Long id);
 }

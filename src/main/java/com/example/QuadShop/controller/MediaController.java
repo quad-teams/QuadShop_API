@@ -8,17 +8,28 @@ import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/images")
 public class MediaController {
     private final MediaService service;
 
-    @PostMapping
-    public Media AddMedia(AddMedia request) {
+    @PostMapping("/images")
+    public Media addImage(@ModelAttribute AddMedia request) {
+        request.setType("image");
         return service.upload(request);
     }
 
-    @DeleteMapping("/{id}")
-    public void DeleteMedia(@PathVariable String id) throws Exception {
-       service.delete(id);
+    @PostMapping("/videos")
+    public Media addVideo(@ModelAttribute AddMedia request) {
+        request.setType("video");
+        return service.upload(request);
+    }
+
+    @DeleteMapping("/images/{id}")
+    public void deleteImage(@PathVariable String id) throws Exception {
+        service.delete(id);
+    }
+
+    @DeleteMapping("/media/{id}")
+    public void deleteMedia(@PathVariable String id) throws Exception {
+        service.delete(id);
     }
 }
