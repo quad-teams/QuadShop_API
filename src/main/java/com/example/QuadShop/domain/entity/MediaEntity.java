@@ -21,9 +21,16 @@ public class MediaEntity {
     @Column(nullable = false)
     private String type;
 
+    // Many images belong to one product
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private ProductEntity product;
+
+    // One image can be the default image of a product
+    @OneToOne(mappedBy = "default_image")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private ProductEntity productDefaultImage;
 }

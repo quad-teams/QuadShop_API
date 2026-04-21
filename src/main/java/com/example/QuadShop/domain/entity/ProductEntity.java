@@ -52,4 +52,11 @@ public class ProductEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<SpecificationEntity> specifications = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "default_image_id") // FK column in products table
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private MediaEntity default_image;
+
 }

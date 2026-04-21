@@ -75,4 +75,21 @@ public class MediaService {
                 ObjectUtils.asMap("resource_type", mediaEntity.get().getType())
         );
     }
+
+    public void setDefault(String id) {
+        MediaEntity media = mediaRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Media not found"));
+
+        ProductEntity product = media.getProduct();
+        if (product == null) {
+            throw new RuntimeException("Media has no associated product");
+        }
+
+        // Set the new default image
+        product.setDefault_image(media);
+
+        // Save the product, NOT the media
+        productsRepo.save(product);
+    }
+
 }

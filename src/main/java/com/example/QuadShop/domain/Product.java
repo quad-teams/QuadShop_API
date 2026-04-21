@@ -20,4 +20,5 @@ public class Product {
     List<Media> images;
     List<Stock> stock;
     List<Specification> specifications;
+    Media default_image;
 }

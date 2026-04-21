@@ -32,6 +32,14 @@ public class ToDomain {
             }
         }
 
+        Media default_image=null;
+
+
+
+        if (entity.getDefault_image()!=null)  { default_image=      new Media(entity.getDefault_image().getId(),
+                entity.getDefault_image().getUrl(),
+                entity.getDefault_image().getType());}
+
         // Convert sizes
         List<Stock> stock = new ArrayList<>();
         if (entity.getStock() != null) {
@@ -68,7 +76,8 @@ public class ToDomain {
                 video,
                 images,
                 stock,
-                specifications
+                specifications,
+                default_image
         );
     }
 

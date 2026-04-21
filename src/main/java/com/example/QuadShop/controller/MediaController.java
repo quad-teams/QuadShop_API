@@ -32,4 +32,10 @@ public class MediaController {
     public void deleteMedia(@PathVariable String id) throws Exception {
         service.delete(id);
     }
+
+    @PutMapping("/media/{id}/default")
+    public void setDefaultImage(@PathVariable String id) {
+        service.setDefault(id);
+    }
+
 }
