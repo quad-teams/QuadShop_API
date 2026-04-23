@@ -4,9 +4,9 @@ A RESTful backend service built with **Java Spring Boot**, powering the QuadShop
 
 ---
 
-## 🚀 Features
+##  Features
 
-### 🧩 Product Management
+###  Product Management
 - Retrieve all products
 - Retrieve a single product
 - Create new products
@@ -14,7 +14,7 @@ A RESTful backend service built with **Java Spring Boot**, powering the QuadShop
 - Delete products
 - Manage product sizes and specifications
 
-### 🖼️ Image Management
+###  Image Management
 - Upload product images
 - Delete images
 - Integration with **Cloudinary** for external image hosting
@@ -22,7 +22,7 @@ A RESTful backend service built with **Java Spring Boot**, powering the QuadShop
 
 ---
 
-## 🧰 Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -36,7 +36,7 @@ A RESTful backend service built with **Java Spring Boot**, powering the QuadShop
 
 ---
 
-## 🗄️ Database Structure
+##  Database Structure
 
 The API uses a MySQL database with the following tables:
 
@@ -51,7 +51,7 @@ Each table is mapped to a JPA entity in the `domain` package.
 
 ---
 
-## 🗂️ Project Structure
+##  Project Structure
 
 ```
 src/
