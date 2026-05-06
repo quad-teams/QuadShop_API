@@ -14,13 +14,13 @@ public class MediaController {
     @PostMapping("/images")
     public Media addImage(@ModelAttribute AddMedia request) {
         request.setType("image");
-        return service.upload(request);
+        return service.uploadImage(request);
     }
 
     @PostMapping("/videos")
     public Media addVideo(@ModelAttribute AddMedia request) {
         request.setType("video");
-        return service.upload(request);
+        return service.uploadVideo(request);
     }
 
     @DeleteMapping("/images/{id}")

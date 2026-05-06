@@ -5,6 +5,7 @@ import com.example.QuadShop.domain.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ToDomain {
 
@@ -18,12 +19,14 @@ public class ToDomain {
         if (entity.getMedia() != null) {
             for (MediaEntity EM : entity.getMedia()) {
                 if (EM.getType().equals("image")) {
-                images.add(new Media(
-                        EM.getId(),
-                        EM.getUrl(),
-                        EM.getType()
-
-                ));}
+                    if (entity.getDefault_image()!=null && !Objects.equals(EM.getId(), entity.getDefault_image().getId())) {
+                        images.add(new Media(
+                                EM.getId(),
+                                EM.getUrl(),
+                                EM.getType()
+                        ));
+                    }
+                }
                 else if (EM.getType().equals("video")) {
                     video = new Media(EM.getId(),
                             EM.getUrl(),
@@ -38,7 +41,9 @@ public class ToDomain {
 
         if (entity.getDefault_image()!=null)  { default_image=      new Media(entity.getDefault_image().getId(),
                 entity.getDefault_image().getUrl(),
-                entity.getDefault_image().getType());}
+                entity.getDefault_image().getType());
+            images.addFirst(default_image);
+        }
 
         // Convert sizes
         List<Stock> stock = new ArrayList<>();
