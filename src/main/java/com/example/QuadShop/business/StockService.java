@@ -139,9 +139,6 @@ public class StockService {
     // ---------------------------------------------------------
     // ADD NEW COLOUR
     // ---------------------------------------------------------
-    // ---------------------------------------------------------
-    // ADD NEW COLOUR
-    // ---------------------------------------------------------
     public List<Stock> addColour(long productId, String newColour) {
         ProductEntity product = loadProduct(productId);
 
@@ -156,19 +153,16 @@ public class StockService {
 
         ensureVariantMode(product);
 
+        // Capture sizes BEFORE deleting any default-colour placeholder rows
         List<String> sizes = stockRepo.findByProduct_Id(productId)
                 .stream()
                 .map(StockEntity::getSize)
                 .distinct()
                 .toList();
 
-        if (sizes.isEmpty()) {
-            sizes = List.of("Default");
-        }
-
-        // If all existing stock rows have a Default/null colour, they were placeholder
-        // entries created when only sizes existed. Remove them so we don't end up with
-        // a mix of real-colour and Default-colour rows for the same sizes.
+        // If all existing rows have a Default/null colour they are placeholders
+        // created when only sizes existed — remove them to avoid mixing real and
+        // Default colour rows for the same sizes.
         boolean onlyDefaultColour = stockRepo.findByProduct_Id(productId)
                 .stream()
                 .allMatch(s -> s.getColour() == null || "Default".equals(s.getColour()));
@@ -181,8 +175,12 @@ public class StockService {
             stockRepo.deleteAll(defaultColourEntries);
         }
 
+        // If no real sizes were found, fall back to a single Default size
+        if (sizes.isEmpty()) {
+            sizes = List.of("Default");
+        }
+
         List<StockEntity> created = sizes.stream()
-                .filter(size -> size != null && !"Default".equals(size)) // only real sizes
                 .map(size -> {
                     StockEntity s = new StockEntity();
                     s.setProduct(product);
@@ -194,6 +192,7 @@ public class StockService {
 
         return created.stream().map(this::toDomain).toList();
     }
+
     // ---------------------------------------------------------
     // REMOVE SIZE
     // ---------------------------------------------------------
