@@ -76,7 +76,7 @@ public class StockService {
                 stock.getId()
         );
 
-        if (exists) {
+        if (product.getStock().stream().count()>1 && exists) {
             throw new RuntimeException("This size/colour combination already exists");
         }
 
@@ -87,15 +87,7 @@ public class StockService {
         return toDomain(stockRepo.save(stock));
     }
 
-    // ---------------------------------------------------------
-    // DELETE STOCK ENTRY
-    // ---------------------------------------------------------
-    public void delete(long id) {
-        if (!stockRepo.existsById(id)) {
-            throw new RuntimeException("Stock not found");
-        }
-        stockRepo.deleteById(id);
-    }
+
 
     // ---------------------------------------------------------
     // ADD NEW SIZE

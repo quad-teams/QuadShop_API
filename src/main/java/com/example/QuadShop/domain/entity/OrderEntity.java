@@ -18,6 +18,9 @@ public class OrderEntity {
     @Column(nullable = false)
     private String status ;
 
+    @Column(nullable = false)
+    private String user_email;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemEntity> orderItems;
 

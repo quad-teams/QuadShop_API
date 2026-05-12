@@ -17,8 +17,11 @@ public class OrderItemEntity {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String size;
+
+    @Column(nullable = true)
+    private String colour;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)

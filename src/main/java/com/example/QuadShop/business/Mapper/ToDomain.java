@@ -23,14 +23,16 @@ public class ToDomain {
                         images.add(new Media(
                                 EM.getId(),
                                 EM.getUrl(),
-                                EM.getType()
+                                EM.getType(),
+                                EM.getColour()
                         ));
                     }
                 }
                 else if (EM.getType().equals("video")) {
                     video = new Media(EM.getId(),
                             EM.getUrl(),
-                            EM.getType());
+                            EM.getType(),
+                            EM.getColour());
                 }
             }
         }
@@ -41,7 +43,8 @@ public class ToDomain {
 
         if (entity.getDefault_image()!=null)  { default_image=      new Media(entity.getDefault_image().getId(),
                 entity.getDefault_image().getUrl(),
-                entity.getDefault_image().getType());
+                entity.getDefault_image().getType(),
+                entity.getDefault_image().getColour());
             images.addFirst(default_image);
         }
 
@@ -108,9 +111,9 @@ public class ToDomain {
         if (entity == null) return null;
         return new OrderItem(
                 entity.getId(),
-                Product(entity.getProduct()),
                 entity.getQuantity(),
-                entity.getSize()
+                entity.getSize(),
+                entity.getColour()
         );
     }
 

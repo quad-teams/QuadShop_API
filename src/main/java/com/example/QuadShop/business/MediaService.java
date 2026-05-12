@@ -41,7 +41,7 @@ public class MediaService {
 
             mediaRepo.save(media);
 
-            return new Media(media.getId(), media.getUrl(), media.getType());
+            return new Media(media.getId(), media.getUrl(), media.getType(),media.getColour());
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to upload image", e);
@@ -96,7 +96,7 @@ public class MediaService {
 
             mediaRepo.save(media);
 
-            return new Media(media.getId(), media.getUrl(), media.getType());
+            return new Media(media.getId(), media.getUrl(), media.getType(),media.getColour());
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to upload video", e);

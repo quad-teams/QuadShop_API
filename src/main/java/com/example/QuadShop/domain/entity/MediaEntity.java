@@ -21,6 +21,9 @@ public class MediaEntity {
     @Column(nullable = false)
     private String type;
 
+    @Column(nullable = true)
+    private String colour;
+
     // Many images belong to one product
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

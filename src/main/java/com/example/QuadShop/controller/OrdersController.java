@@ -1,6 +1,7 @@
 package com.example.QuadShop.controller;
 
 import com.example.QuadShop.business.OrdersService;
+import com.example.QuadShop.controller.dto.Requests.AddOrder;
 import com.example.QuadShop.controller.dto.Requests.AddOrderItem;
 import com.example.QuadShop.controller.dto.Requests.UpdateOrderItem;
 import com.example.QuadShop.domain.Order;
@@ -20,26 +21,8 @@ public class OrdersController {
     }
 
     @PostMapping
-    public Long NewCart() {
-        return service.createOrder();
+    public Long NewOrder(@RequestBody AddOrder request) {
+        return service.createOrder(request);
     }
-
-    @PostMapping("/AddOrderItem")
-    public void addOrderItem(@RequestBody AddOrderItem request) {
-        System.out.println("hahahahah  "+request);
-        service.addOrderItem(request.cartId,
-                request.productId,
-                request.quantity,
-                request.size);
-    }
-
-    @PutMapping("/UpdateOrderItem/{id}")
-    public void updateOrderItem(
-            @PathVariable Long id,
-            @RequestBody UpdateOrderItem request
-    ) {
-        service.updateOrderItem(id, request);
-    }
-
 
 }
