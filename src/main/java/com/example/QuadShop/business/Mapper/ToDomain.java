@@ -85,7 +85,8 @@ public class ToDomain {
                 images,
                 stock,
                 specifications,
-                default_image
+                default_image,
+                entity.getSupplier_product_id()
         );
     }
 

@@ -36,6 +36,9 @@ public class ProductEntity {
     private String subCategory;
 
     @Column(nullable = true)
+    private String supplier_product_id;
+
+    @Column(nullable = true)
     private boolean has_variants;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

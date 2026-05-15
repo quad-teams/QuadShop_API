@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 @Data
 public class UpdateProduct {
     public long id;
+    public String supplier_product_id;
     public String name ;
     public String category;
     public String description;

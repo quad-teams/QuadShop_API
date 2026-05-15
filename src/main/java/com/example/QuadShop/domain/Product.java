@@ -21,4 +21,5 @@ public class Product {
     List<Stock> stock;
     List<Specification> specifications;
     Media default_image;
+    String supplier_product_id;
 }
