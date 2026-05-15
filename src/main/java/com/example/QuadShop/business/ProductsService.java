@@ -34,6 +34,7 @@ public class ProductsService {
         ProductEntity product = productsRepo.findById(request.id).orElse(null);
         if (product == null) return;
         product.setName(request.name);
+        product.setSupplier_product_id(request.supplier_product_id);
         product.setCategory(request.category);
         product.setSubCategory(request.sub_category);
         product.setDescription(request.description);
