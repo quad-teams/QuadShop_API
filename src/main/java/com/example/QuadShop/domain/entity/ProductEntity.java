@@ -41,6 +41,15 @@ public class ProductEntity {
     @Column(nullable = true)
     private boolean has_variants;
 
+    @Column(nullable = true)
+    private String link;
+
+    @Column(nullable = true)
+    private String notes;
+
+    @Column(nullable = true)
+    private String supplier;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

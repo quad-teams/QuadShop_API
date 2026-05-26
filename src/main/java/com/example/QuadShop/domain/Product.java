@@ -1,5 +1,6 @@
 package com.example.QuadShop.domain;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -21,5 +22,13 @@ public class Product {
     List<Stock> stock;
     List<Specification> specifications;
     Media default_image;
+    String supplier;
     String supplier_product_id;
+    String link;
+    String notes;
+
 }
+
+
+
+

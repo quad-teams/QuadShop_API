@@ -24,5 +24,4 @@ public class OrdersController {
     public Long NewOrder(@RequestBody AddOrder request) {
         return service.createOrder(request);
     }
-
 }

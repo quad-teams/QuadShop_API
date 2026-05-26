@@ -33,28 +33,28 @@ public class ProductsService {
         System.out.println(request);
         ProductEntity product = productsRepo.findById(request.id).orElse(null);
         if (product == null) return;
+
         product.setName(request.name);
         product.setSupplier_product_id(request.supplier_product_id);
         product.setCategory(request.category);
         product.setSubCategory(request.sub_category);
         product.setDescription(request.description);
         product.setPrice(request.price);
+        product.setSupplier(request.supplier);
+        product.setLink(request.link);
+        product.setNotes(request.notes);
+
         productsRepo.save(product);
     }
 
     public List<Product> GetAllProducts(){
         List<ProductEntity> entities = productsRepo.findAll();
 
-
         List<Product> products = new ArrayList<>();
         for (ProductEntity entity : entities) {
-
-
-
             products.add(ToDomain.Product(entity));
         }
 
-        System.out.println(entities.getFirst());
         return products;
     }
 
@@ -69,7 +69,6 @@ public class ProductsService {
 
     public Product GetProductById(Long id){
         ProductEntity entity = productsRepo.findById(id).orElse(null);
-        System.out.println(ToDomain.Product(entity));
         return ToDomain.Product(entity);
     }
 

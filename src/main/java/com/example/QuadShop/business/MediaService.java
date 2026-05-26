@@ -88,9 +88,11 @@ public class MediaService {
                     ObjectUtils.asMap("resource_type", "video")
             );
 
+            String url = metaData.get("url").toString().replace("http://", "https://");
+
             MediaEntity media = new MediaEntity();
             media.setId(metaData.get("public_id").toString());
-            media.setUrl(metaData.get("url").toString());
+            media.setUrl(url);
             media.setType("video");
             media.setProduct(product);
 

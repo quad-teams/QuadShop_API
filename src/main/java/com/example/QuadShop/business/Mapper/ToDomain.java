@@ -86,7 +86,11 @@ public class ToDomain {
                 stock,
                 specifications,
                 default_image,
-                entity.getSupplier_product_id()
+                entity.getSupplier(),
+                entity.getSupplier_product_id(),
+                entity.getLink(),
+                entity.getNotes()
+
         );
     }
 
