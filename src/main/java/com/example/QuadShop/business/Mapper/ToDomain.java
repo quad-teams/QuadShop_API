@@ -61,17 +61,6 @@ public class ToDomain {
             }
         }
 
-        // Convert specifications
-        List<Specification> specifications = new ArrayList<>();
-        if (entity.getSpecifications() != null) {
-            for (SpecificationEntity se : entity.getSpecifications()) {
-                specifications.add(new Specification(
-                        se.getId(),
-                        se.getKey(),
-                        se.getValue()
-                ));
-            }
-        }
 
         return new Product(
                 entity.getId(),
@@ -84,7 +73,6 @@ public class ToDomain {
                 video,
                 images,
                 stock,
-                specifications,
                 default_image,
                 entity.getSupplier(),
                 entity.getSupplier_product_id(),

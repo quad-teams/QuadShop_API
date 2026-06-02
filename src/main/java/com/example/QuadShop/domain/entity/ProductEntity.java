@@ -60,13 +60,8 @@ public class ProductEntity {
     @ToString.Exclude
     private List<MediaEntity> media = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private List<SpecificationEntity> specifications = new ArrayList<>();
-
     @OneToOne
-    @JoinColumn(name = "default_image_id") // FK column in products table
+    @JoinColumn(name = "default_image_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private MediaEntity default_image;

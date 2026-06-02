@@ -20,7 +20,6 @@ public class Product {
     Media video;
     List<Media> images;
     List<Stock> stock;
-    List<Specification> specifications;
     Media default_image;
     String supplier;
     String supplier_product_id;
