@@ -8,5 +8,6 @@ import java.util.List;
 @Data
 public class AddOrder {
     public String email;
+    public String full_name;
     public List<OrderItem> items;
 }
