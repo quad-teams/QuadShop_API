@@ -95,8 +95,11 @@ public class ToDomain {
 
         return new Order(
                 entity.getId(),
+                entity.getFull_name(),
+                entity.getUser_email(),
                 entity.getStatus(),
-                orderItems
+                orderItems,
+                entity.getCreated_on()
         );
     }
 

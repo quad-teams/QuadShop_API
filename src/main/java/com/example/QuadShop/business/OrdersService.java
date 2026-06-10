@@ -2,18 +2,13 @@ package com.example.QuadShop.business;
 
 import com.example.QuadShop.business.Mapper.ToDomain;
 import com.example.QuadShop.controller.dto.Requests.AddOrder;
-import com.example.QuadShop.controller.dto.Requests.UpdateOrder;
-import com.example.QuadShop.controller.dto.Requests.UpdateOrderItem;
 import com.example.QuadShop.domain.Order;
 import com.example.QuadShop.domain.OrderItem;
-import com.example.QuadShop.domain.Stock;
 import com.example.QuadShop.domain.entity.StockEntity;
-import com.example.QuadShop.persistence.OrderItemsRepo;
 import com.example.QuadShop.persistence.OrdersRepo;
 import com.example.QuadShop.persistence.ProductsRepo;
 import com.example.QuadShop.domain.entity.OrderEntity;
 import com.example.QuadShop.domain.entity.OrderItemEntity;
-import com.example.QuadShop.domain.entity.ProductEntity;
 import com.example.QuadShop.persistence.StockRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,13 +23,26 @@ import java.util.Optional;
 public class OrdersService {
     private final ProductsRepo productsRepo;
     private final OrdersRepo ordersRepo;
-    private final OrderItemsRepo orderItemsRepo;
     private final StockRepo stockrepo ;
 
+    public List<Order> GetAllOrders() {
+        List<OrderEntity> entities= ordersRepo.findAll();
+        List<Order> orders=  new ArrayList<>();
 
+        for(OrderEntity order:entities){
+            orders.add(ToDomain.Order(order));
+        }
+        return orders;
+    }
+
+    public void ChangeOrderStatus(Long id, String status) {
+        OrderEntity order = ordersRepo.findById(id).get();
+        order.setStatus(status);
+        ordersRepo.save(order);
+    }
 
     public Order getByID(long id) {
-        Optional<OrderEntity> entity= ordersRepo.findByStatusAndId("InCart",id);
+        Optional<OrderEntity> entity= ordersRepo.findById(id);
         return entity.map(ToDomain::Order).orElse(null);
     }
 
