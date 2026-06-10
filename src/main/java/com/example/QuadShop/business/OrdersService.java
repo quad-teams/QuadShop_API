@@ -13,6 +13,7 @@ import com.example.QuadShop.persistence.StockRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +51,9 @@ public class OrdersService {
     public Long createOrder(AddOrder request) {
         OrderEntity order = new OrderEntity();
         order.setStatus("pending");
+        order.setUser_email(request.getFull_name());
         order.setUser_email(request.getEmail());
+        order.setCreated_on(LocalDateTime.now());
 
         List<OrderItemEntity> orderItems = new ArrayList<>();
         for (OrderItem i : request.getItems()) {
@@ -78,8 +81,8 @@ public class OrdersService {
             orderItem.setOrder(order);
             orderItems.add(orderItem);
         }
-
         order.setOrderItems(orderItems);
+
         return ordersRepo.save(order).getId();
     }
 }
