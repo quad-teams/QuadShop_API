@@ -61,11 +61,11 @@ public class OrdersService {
             String size   = (i.getSize()   == null || i.getSize().isBlank())   ? "Default" : i.getSize();
             String colour = (i.getColour() == null || i.getColour().isBlank()) ? "Default" : i.getColour();
 
-            StockEntity stock = stockrepo.findByColourAndSizeAndProduct_Id(colour, size, i.getProductId());
+            StockEntity stock = stockrepo.findByColourAndSizeAndProduct_Id(colour, size, i.getProduct().getId());
 
             if (stock == null) {
                 throw new IllegalArgumentException(
-                        "No stock found for productId=" + i.getProductId()
+                        "No stock found for productId=" + i.getProduct().getId()
                                 + ", size=" + size + ", colour=" + colour
                 );
             }
@@ -77,7 +77,7 @@ public class OrdersService {
             orderItem.setSize(size);
             orderItem.setColour(colour);
             orderItem.setQuantity(i.getQuantity());
-            orderItem.setProduct(productsRepo.getReferenceById(i.getProductId()));
+            orderItem.setProduct(productsRepo.getReferenceById(i.getProduct().getId()));
             orderItem.setOrder(order);
             orderItems.add(orderItem);
         }
