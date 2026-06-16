@@ -106,7 +106,7 @@ public class ToDomain {
     private static OrderItem OrderItem(OrderItemEntity entity) {
         if (entity == null) return null;
         return new OrderItem(
-                entity.getId(),
+                Product(entity.getProduct()),
                 entity.getQuantity(),
                 entity.getSize(),
                 entity.getColour()

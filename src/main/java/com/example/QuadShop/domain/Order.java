@@ -15,5 +15,4 @@ public class Order {
     String Status;
     List<OrderItem> OrderItems;
     LocalDateTime created_on;
-
 }

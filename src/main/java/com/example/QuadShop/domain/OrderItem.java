@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItem {
-   Long productId;
+   Product product;
    int quantity;
    String size;
    String colour;
