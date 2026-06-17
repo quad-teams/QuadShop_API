@@ -42,26 +42,21 @@ public class StockService {
         return toDomain(stockRepo.save(stock));
     }
 
-    // ---------------------------------------------------------
-    // READ SINGLE STOCK ENTRY
-    // ---------------------------------------------------------
-    public Stock getById(long id) {
-        return toDomain(loadStock(id));
-    }
 
     // ---------------------------------------------------------
     // UPDATE STOCK ENTRY
     // ---------------------------------------------------------
     public Stock update(UpdateStock request) {
-
         ProductEntity product = loadProduct(request.getProductId());
         StockEntity stock;
 
-        if (!product.isHas_variants()) {
-            // Single-variant product → always one stock entry
+        boolean hasVariants = hasRealVariants(request.getProductId());
+
+        if (!hasVariants) {
+            // No variants — always one Default/Default stock entry
             stock = product.getStock().getFirst();
         } else {
-            // Variant product → stockId must be provided
+            // Variant product — stockId must be provided
             if (request.getId() == null) {
                 throw new RuntimeException("Stock ID is required for variant products");
             }
@@ -76,7 +71,7 @@ public class StockService {
                 stock.getId()
         );
 
-        if (product.getStock().stream().count()>1 && exists) {
+        if (product.getStock().size() > 1 && exists) {
             throw new RuntimeException("This size/colour combination already exists");
         }
 
@@ -86,8 +81,6 @@ public class StockService {
 
         return toDomain(stockRepo.save(stock));
     }
-
-
 
     // ---------------------------------------------------------
     // ADD NEW SIZE
@@ -99,13 +92,12 @@ public class StockService {
             throw new RuntimeException("Size already exists for this product");
         }
 
-        // If product has no variants, clear all stock entries first
-        if (!product.isHas_variants()) {
+        // If no real variants exist yet, wipe the Default/Default placeholder
+        if (!hasRealVariants(productId)) {
             clearAllStock(productId);
         }
 
-        ensureVariantMode(product);
-
+        // Use existing colours, or fall back to Default
         List<String> colours = stockRepo.findByProduct_Id(productId)
                 .stream()
                 .map(StockEntity::getColour)
@@ -138,14 +130,12 @@ public class StockService {
             throw new RuntimeException("Colour already exists for this product");
         }
 
-        // If product has no variants, clear all stock entries first
-        if (!product.isHas_variants()) {
+        // If no real variants exist yet, wipe the Default/Default placeholder
+        if (!hasRealVariants(productId)) {
             clearAllStock(productId);
         }
 
-        ensureVariantMode(product);
-
-        // Capture sizes BEFORE deleting any default-colour placeholder rows
+        // Capture sizes BEFORE deleting any Default-colour placeholder rows
         List<String> sizes = stockRepo.findByProduct_Id(productId)
                 .stream()
                 .map(StockEntity::getSize)
@@ -153,8 +143,7 @@ public class StockService {
                 .toList();
 
         // If all existing rows have a Default/null colour they are placeholders
-        // created when only sizes existed — remove them to avoid mixing real and
-        // Default colour rows for the same sizes.
+        // created when only sizes existed — remove them to avoid duplicates
         boolean onlyDefaultColour = stockRepo.findByProduct_Id(productId)
                 .stream()
                 .allMatch(s -> s.getColour() == null || "Default".equals(s.getColour()));
@@ -167,20 +156,19 @@ public class StockService {
             stockRepo.deleteAll(defaultColourEntries);
         }
 
-        // If no real sizes were found, fall back to a single Default size
+        // If no real sizes exist, fall back to Default
         if (sizes.isEmpty()) {
             sizes = List.of("Default");
         }
 
-        List<StockEntity> created = sizes.stream()
-                .map(size -> {
-                    StockEntity s = new StockEntity();
-                    s.setProduct(product);
-                    s.setSize(size);
-                    s.setColour(newColour);
-                    s.setQuantity(0);
-                    return stockRepo.save(s);
-                }).toList();
+        List<StockEntity> created = sizes.stream().map(size -> {
+            StockEntity s = new StockEntity();
+            s.setProduct(product);
+            s.setSize(size);
+            s.setColour(newColour);
+            s.setQuantity(0);
+            return stockRepo.save(s);
+        }).toList();
 
         return created.stream().map(this::toDomain).toList();
     }
@@ -189,7 +177,10 @@ public class StockService {
     // REMOVE SIZE
     // ---------------------------------------------------------
     public void removeSize(long productId, String size) {
-        ProductEntity product = loadProduct(productId);
+        // If already collapsed to no-variant mode, nothing to do
+        if (!hasRealVariants(productId)) {
+            return;
+        }
 
         List<StockEntity> toDelete = stockRepo.findByProduct_Id(productId)
                 .stream()
@@ -201,14 +192,17 @@ public class StockService {
         }
 
         stockRepo.deleteAll(toDelete);
-        handleVariantCollapse(productId, product);
+        handleVariantCollapse(productId, loadProduct(productId));
     }
 
     // ---------------------------------------------------------
     // REMOVE COLOUR
     // ---------------------------------------------------------
     public void removeColour(long productId, String colour) {
-        ProductEntity product = loadProduct(productId);
+        // If already collapsed to no-variant mode, nothing to do
+        if (!hasRealVariants(productId)) {
+            return;
+        }
 
         List<StockEntity> toDelete = stockRepo.findByProduct_Id(productId)
                 .stream()
@@ -220,13 +214,19 @@ public class StockService {
         }
 
         stockRepo.deleteAll(toDelete);
-        handleVariantCollapse(productId, product);
+        handleVariantCollapse(productId, loadProduct(productId));
     }
-
 
     // ---------------------------------------------------------
     // PRIVATE HELPERS
     // ---------------------------------------------------------
+
+    /** Returns true if this product has any stock row that isn't Default/Default. */
+    private boolean hasRealVariants(long productId) {
+        return stockRepo.findByProduct_Id(productId)
+                .stream()
+                .anyMatch(s -> !"Default".equals(s.getSize()) || !"Default".equals(s.getColour()));
+    }
 
     private ProductEntity loadProduct(long id) {
         return productsRepo.findById(id)
@@ -245,32 +245,20 @@ public class StockService {
         }
     }
 
-    private void ensureVariantMode(ProductEntity product) {
-        if (!product.isHas_variants()) {
-            product.setHas_variants(true);
-            productsRepo.save(product);
-        }
-    }
-
     private void handleVariantCollapse(long productId, ProductEntity product) {
-        boolean hasRealVariants = stockRepo.findByProduct_Id(productId)
-                .stream()
-                .anyMatch(s -> !"Default".equals(s.getSize()) || !"Default".equals(s.getColour()));
-
+        boolean hasRealVariants = hasRealVariants(productId);
         if (!hasRealVariants) {
-            product.setHas_variants(false);
-            productsRepo.save(product);
             seedDefaultEntry(product);
         }
     }
 
-    private StockEntity seedDefaultEntry(ProductEntity product) {
+    private void seedDefaultEntry(ProductEntity product) {
         StockEntity s = new StockEntity();
         s.setProduct(product);
         s.setSize("Default");
         s.setColour("Default");
         s.setQuantity(0);
-        return stockRepo.save(s);
+        stockRepo.save(s);
     }
 
     private Stock toDomain(StockEntity e) {

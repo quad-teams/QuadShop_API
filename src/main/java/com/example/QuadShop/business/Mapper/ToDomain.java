@@ -69,7 +69,6 @@ public class ToDomain {
                 entity.getPrice(),
                 entity.getCategory(),
                 entity.getSubCategory(),
-                entity.isHas_variants(),
                 video,
                 images,
                 stock,

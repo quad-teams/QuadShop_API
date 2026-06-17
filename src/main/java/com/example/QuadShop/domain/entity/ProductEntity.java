@@ -39,9 +39,6 @@ public class ProductEntity {
     private String supplier_product_id;
 
     @Column(nullable = true)
-    private boolean has_variants;
-
-    @Column(nullable = true)
     private String link;
 
     @Column(nullable = true)
