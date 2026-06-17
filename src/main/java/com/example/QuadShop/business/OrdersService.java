@@ -2,6 +2,7 @@ package com.example.QuadShop.business;
 
 import com.example.QuadShop.business.Mapper.ToDomain;
 import com.example.QuadShop.controller.dto.Requests.AddOrder;
+import com.example.QuadShop.controller.dto.Requests.item;
 import com.example.QuadShop.domain.Order;
 import com.example.QuadShop.domain.OrderItem;
 import com.example.QuadShop.domain.entity.StockEntity;
@@ -49,23 +50,25 @@ public class OrdersService {
 
 
     public Long createOrder(AddOrder request) {
+
+        System.out.println(request);
         OrderEntity order = new OrderEntity();
         order.setStatus("pending");
-        order.setUser_email(request.getFull_name());
+        order.setFull_name(request.getFull_name());
         order.setUser_email(request.getEmail());
         order.setCreated_on(LocalDateTime.now());
 
         List<OrderItemEntity> orderItems = new ArrayList<>();
-        for (OrderItem i : request.getItems()) {
+        for (item i : request.getItems()) {
             // Normalize null/"" to "Default" to match DB convention
             String size   = (i.getSize()   == null || i.getSize().isBlank())   ? "Default" : i.getSize();
             String colour = (i.getColour() == null || i.getColour().isBlank()) ? "Default" : i.getColour();
 
-            StockEntity stock = stockrepo.findByColourAndSizeAndProduct_Id(colour, size, i.getProduct().getId());
+            StockEntity stock = stockrepo.findByColourAndSizeAndProduct_Id(colour, size, i.getProductId());
 
             if (stock == null) {
                 throw new IllegalArgumentException(
-                        "No stock found for productId=" + i.getProduct().getId()
+                        "No stock found for productId=" + i.getProductId()
                                 + ", size=" + size + ", colour=" + colour
                 );
             }
@@ -77,11 +80,13 @@ public class OrdersService {
             orderItem.setSize(size);
             orderItem.setColour(colour);
             orderItem.setQuantity(i.getQuantity());
-            orderItem.setProduct(productsRepo.getReferenceById(i.getProduct().getId()));
+            orderItem.setProduct(productsRepo.getReferenceById(i.getProductId()));
             orderItem.setOrder(order);
             orderItems.add(orderItem);
         }
         order.setOrderItems(orderItems);
+
+        System.out.println(order);
 
         return ordersRepo.save(order).getId();
     }

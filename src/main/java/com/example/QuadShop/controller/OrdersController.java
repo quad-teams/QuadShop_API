@@ -35,6 +35,7 @@ public class OrdersController {
 
     @PostMapping
     public Long NewOrder(@RequestBody AddOrder request) {
+        System.out.println(request.toString());
         return service.createOrder(request);
     }
 }
