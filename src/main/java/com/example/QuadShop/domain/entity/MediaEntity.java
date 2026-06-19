@@ -22,6 +22,9 @@ public class MediaEntity {
     private String type;
 
     @Column(nullable = true)
+    private String logo_type;
+
+    @Column(nullable = true)
     private String colour;
 
     // Many images belong to one product

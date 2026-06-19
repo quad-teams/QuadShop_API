@@ -1,7 +1,7 @@
 package com.example.QuadShop.controller;
-
 import com.example.QuadShop.business.MediaService;
 import com.example.QuadShop.controller.dto.Requests.AddMedia;
+import com.example.QuadShop.controller.dto.Requests.UpdateMedia;
 import com.example.QuadShop.domain.Media;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +38,8 @@ public class MediaController {
         service.setDefault(id);
     }
 
-
+    @PutMapping("/images/{id}")
+    public Media updateImageMetadata(@PathVariable String id, @RequestBody UpdateMedia request) {
+        return service.updateImageMetadata(id, request);
+    }
 }

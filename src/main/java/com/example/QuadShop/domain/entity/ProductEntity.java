@@ -45,6 +45,9 @@ public class ProductEntity {
     private String notes;
 
     @Column(nullable = true)
+    private boolean has_logo_variant;
+
+    @Column(nullable = true)
     private String supplier;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

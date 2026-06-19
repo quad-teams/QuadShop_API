@@ -24,6 +24,7 @@ public class Product {
     String supplier_product_id;
     String link;
     String notes;
+    Boolean has_logo_variant;
 
 }
 

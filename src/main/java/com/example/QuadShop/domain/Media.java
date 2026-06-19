@@ -10,4 +10,5 @@ public class Media {
     String url;
     String type;
     String colour;
+    String logo;
 }

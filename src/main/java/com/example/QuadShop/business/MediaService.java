@@ -2,7 +2,9 @@ package com.example.QuadShop.business;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.QuadShop.business.Mapper.ToDomain;
 import com.example.QuadShop.controller.dto.Requests.AddMedia;
+import com.example.QuadShop.controller.dto.Requests.UpdateMedia;
 import com.example.QuadShop.domain.Media;
 import com.example.QuadShop.persistence.MediaRepo;
 import com.example.QuadShop.persistence.ProductsRepo;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +32,7 @@ public class MediaService {
 
             Map metaData = cloudinary.uploader().upload(
                     request.getFile().getBytes(),
-                    ObjectUtils.emptyMap() // image defaults
+                    ObjectUtils.emptyMap()
             );
 
             MediaEntity media = new MediaEntity();
@@ -40,7 +43,7 @@ public class MediaService {
 
             mediaRepo.save(media);
 
-            return new Media(media.getId(), media.getUrl(), media.getType(),media.getColour());
+            return ToDomain.Media(media);
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to upload image", e);
@@ -53,14 +56,12 @@ public class MediaService {
             ProductEntity product = productsRepo.findById(request.getProductId())
                     .orElseThrow(() -> new IllegalStateException("Product not found"));
 
-            // Remove existing video(s)
             List<MediaEntity> videos = product.getMedia().stream()
                     .filter(m -> "video".equalsIgnoreCase(m.getType()))
                     .toList();
 
             for (MediaEntity video : videos) {
                 try {
-                    // Delete from Cloudinary
                     cloudinary.uploader().destroy(
                             video.getId(),
                             ObjectUtils.asMap("resource_type", "video")
@@ -69,19 +70,12 @@ public class MediaService {
                     e.printStackTrace();
                 }
 
-                // Delete from DB
                 mediaRepo.delete(video);
             }
 
-            // Remove from product list (required for orphanRemoval)
             product.getMedia().removeIf(m -> "video".equalsIgnoreCase(m.getType()));
-
-            // Save product to update relationship
             productsRepo.save(product);
 
-            // -----------------------------
-            // NOW upload the new video
-            // -----------------------------
             Map metaData = cloudinary.uploader().upload(
                     request.getFile().getBytes(),
                     ObjectUtils.asMap("resource_type", "video")
@@ -97,7 +91,7 @@ public class MediaService {
 
             mediaRepo.save(media);
 
-            return new Media(media.getId(), media.getUrl(), media.getType(),media.getColour());
+            return ToDomain.Media(media);
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to upload video", e);
@@ -112,20 +106,14 @@ public class MediaService {
 
         ProductEntity product = media.getProduct();
 
-        // 1. Remove from product list (required for orphanRemoval)
         product.getMedia().remove(media);
         productsRepo.save(product);
 
-        // 2. Delete from Cloudinary
         Map result = cloudinary.uploader().destroy(
                 id,
                 ObjectUtils.asMap("resource_type", media.getType())
         );
-        System.out.println("Cloudinary delete result: " + result);
-
-        // 3. Delete from DB (optional, orphanRemoval already handles it)
         mediaRepo.delete(media);
-        System.out.println("Media list after delete: " + product.getMedia().size());
 
     }
 
@@ -140,11 +128,30 @@ public class MediaService {
             throw new RuntimeException("Media has no associated product");
         }
 
-        // Set the new default image
         product.setDefault_image(media);
 
-        // Save the product, NOT the media
         productsRepo.save(product);
     }
 
+    public Media updateImageMetadata(String id, UpdateMedia request) {
+        Optional<MediaEntity> media = mediaRepo.findById(id);
+        if(media.isEmpty()){throw new IllegalStateException("Media not found");}
+        MediaEntity mediaEntity = media.get();
+
+        System.out.println(request.toString());
+
+        mediaEntity.setLogo_type(request.getLogo_type());
+        mediaEntity.setColour(request.getColour());
+
+        mediaRepo.save(mediaEntity);
+
+        ProductEntity product = mediaEntity.getProduct();
+        if (request.getLogo_type()!=null) {
+        product.setHas_logo_variant(true);
+        productsRepo.save(product);}
+
+
+        return ToDomain.Media(mediaEntity);
+
+    }
 }

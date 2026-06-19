@@ -20,19 +20,11 @@ public class ToDomain {
             for (MediaEntity EM : entity.getMedia()) {
                 if (EM.getType().equals("image")) {
                     if (entity.getDefault_image()!=null && !Objects.equals(EM.getId(), entity.getDefault_image().getId())) {
-                        images.add(new Media(
-                                EM.getId(),
-                                EM.getUrl(),
-                                EM.getType(),
-                                EM.getColour()
-                        ));
+                        images.add(Media(EM));
                     }
                 }
                 else if (EM.getType().equals("video")) {
-                    video = new Media(EM.getId(),
-                            EM.getUrl(),
-                            EM.getType(),
-                            EM.getColour());
+                    video = Media(EM);
                 }
             }
         }
@@ -40,11 +32,7 @@ public class ToDomain {
         Media default_image=null;
 
 
-
-        if (entity.getDefault_image()!=null)  { default_image=      new Media(entity.getDefault_image().getId(),
-                entity.getDefault_image().getUrl(),
-                entity.getDefault_image().getType(),
-                entity.getDefault_image().getColour());
+        if (entity.getDefault_image()!=null)  { default_image=Media(entity.getDefault_image());
             images.addFirst(default_image);
         }
 
@@ -76,8 +64,19 @@ public class ToDomain {
                 entity.getSupplier(),
                 entity.getSupplier_product_id(),
                 entity.getLink(),
-                entity.getNotes()
+                entity.getNotes(),
+                entity.isHas_logo_variant()
 
+        );
+    }
+
+    public static Media Media(MediaEntity entity) {
+        return new Media(
+                entity.getId(),
+                entity.getUrl(),
+                entity.getType(),
+                entity.getColour(),
+                entity.getLogo_type()
         );
     }
 
